@@ -16,7 +16,7 @@ path = str(Path(__file__).parent.absolute())
 class SparqlCache:
     def __init__(self, dataset: str = "graphq"):
         self.dataset = dataset
-        if dataset == "graphq":
+        if dataset == "grail":
             if os.path.exists(path + "/../cache/execution.json"):
                 with open(path + "/../cache/execution.json") as f:
                     self.execution = json.load(f)
@@ -30,7 +30,7 @@ class SparqlCache:
                                       "cmp_entities": {},
                                       "is_reachable": {},
                                       "is_intersectant": {}}
-        elif dataset == "gq1":
+        elif dataset == "graphq":
             if os.path.exists(path + "/../cache/gq1_execution.json"):
                 with open(path + "/../cache/gq1_execution.json") as f:
                     self.execution = json.load(f)

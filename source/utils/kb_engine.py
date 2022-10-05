@@ -28,11 +28,11 @@ def timer(func):
 
 
 def get_vocab(dataset: str):
-    if dataset == "graphq":
+    if dataset == "grail":
         with open(path + '/vocab_files/grailqa.json') as f:
             data = json.load(f)
         return set(data["relations"]), set(data["classes"]), set(data["attributes"])
-    elif dataset == "gq1":
+    elif dataset == "graphq":
         with open(path + '/vocab_files/gq1.json') as f:
             data = json.load(f)
         return set(data["relations"]), set(data["classes"]), set(data["attributes"])
@@ -54,10 +54,10 @@ def get_ontology(dataset: str):
     relation_range = {}
     date_attributes = set()
     numerical_attributes = set()
-    if dataset == "graphq":
+    if dataset == "grail":
         fb_type_file = path + "/../ontology/commons/fb_types"
         fb_roles_file = path + "/../ontology/commons/fb_roles"
-    elif dataset == "gq1":
+    elif dataset == "graphq":
         fb_type_file = path + "/../ontology/fb_types"
         fb_roles_file = path + "/../ontology/fb_roles"
 
@@ -93,15 +93,15 @@ def get_ontology(dataset: str):
 
 
 class KBEngine:
-    def __init__(self, dataset='graphq', MAX_VARIABLES_NUM=20):
+    def __init__(self, dataset='grail', MAX_VARIABLES_NUM=20):
         self._dataset = dataset
-        if dataset in ["graphq", "gq1"]:
+        if dataset in ["graphq", "grail"]:
             self._relations, self._classes, self._attributes = get_vocab(dataset)
         elif dataset == "webq":
             self._relations, self._classes, self._attributes, self._tc_attributes, self._cons_attributes, self._cons_ids = get_vocab(
                 dataset)
 
-        if dataset == "graphq":
+        if dataset == "grail":
             with open('ontology/domain_dict', 'r') as f:
                 self._domain_dict = json.load(f)
             with open('ontology/domain_info', 'r') as f:
@@ -164,7 +164,7 @@ class KBEngine:
         # print("done getting relations")
 
         if self.training and add_noise:
-            if not self._dataset == 'graphq':
+            if not self._dataset == 'grail':
                 rtn.update(random.sample(self._relations, 100))
             elif len(self._domains) > 0:
                 if random.random() > 0.5:
@@ -293,7 +293,7 @@ class KBEngine:
             rtn.update(set(self._cache.get_types(entity)).intersection(self._classes))
 
         if self.training and add_noise:
-            if not self._dataset == "graphq":
+            if not self._dataset == "grail":
                 if len(self._classes) > 100:
                     rtn.update(random.sample(self._classes, 100))
                 else:
@@ -405,7 +405,7 @@ class KBEngine:
         """
 
         if domains is not None and len(domains) > 0:
-            assert self._dataset == 'graphq'
+            assert self._dataset == 'grail'
             self._domains = domains
         else:
             self._domains = []
@@ -429,7 +429,7 @@ class KBEngine:
         elif token == '(':
             if two_tokens[0][0] != '#' and two_tokens[0] not in self._classes:
                 if two_tokens[0] != START_SYMBOL:
-                    if self._dataset in ['graphq', 'gq1']:
+                    if self._dataset in ['graphq', 'grail']:
                         admissible_constants.extend(
                             ['AND', 'JOIN', 'ARGMAX', 'ARGMIN', 'COUNT', 'lt', 'le', 'gt', 'ge'])
                     elif self._dataset == "webq":
@@ -438,10 +438,10 @@ class KBEngine:
                         admissible_constants.extend(['AND', 'JOIN', 'TC', 'CONS', 'ARGMAX', 'ARGMIN', 'lt', 'gt'])
 
                 else:  # The first function
-                    if self._dataset in ['graphq', 'gq1']:
+                    if self._dataset in ['graphq', 'grail']:
                         if len(variables) == 0:
                             admissible_constants.extend(['ARGMAX', 'ARGMIN'])
-                        #  for graphq, it could be (ARGMAX class relation)
+                        #  for grailqa, it could be (ARGMAX class relation)
                         else:
                             admissible_constants.extend(
                                 ['JOIN', 'lt', 'le', 'gt', 'ge', 'ARGMAX', 'ARGMIN'])
@@ -466,7 +466,7 @@ class KBEngine:
                     if i >= num_topics:  # can only be applied to intermediate executions
                         admissible_variables.append(i)
         elif token == 'JOIN':
-            if self._dataset in ["graphq", "gq1"]:
+            if self._dataset in ["graphq", "grail"]:
                 for i in range(len(variables)):  # JOIN accepts both entities and literals
                     admissible_variables.append(i)
             elif self._dataset == "webq":
@@ -481,12 +481,12 @@ class KBEngine:
                 if isinstance(variables[i], set):
                     if i >= num_topics:
                         admissible_variables.append(i)
-            if len(admissible_variables) == 0 and self._dataset == "graphq":
+            if len(admissible_variables) == 0 and self._dataset == "grail":
                 if self.training:
                     admissible_constants.extend(self._classes)
                 else:
                     admissible_constants.extend(answer_types)
-            elif len(admissible_variables) == 0 and self._dataset == "gq1":
+            elif len(admissible_variables) == 0 and self._dataset == "graphq":
                 for c in self._classes:
                     if c[:7] != 'common.' and c[:5] != 'type.' and c[:3] != 'kg.' and c[:5] != 'user.' \
                             and c[:5] != 'base.':
@@ -500,8 +500,8 @@ class KBEngine:
             admissible_constants.append(')')
         elif token[0] == '#':
             if two_tokens[0] == 'AND':
-                if self._dataset in ['graphq', 'gq1']:
-                    if self.training or self._dataset == 'gq1':
+                if self._dataset in ['graphq', 'grail']:
+                    if self.training or self._dataset == 'graphq':
                         admissible_constants.extend(
                             self.get_classes_for_variables(variables[int(token[1:])], add_noise=add_noise))
 
@@ -579,7 +579,7 @@ class KBEngine:
                 admissible_variables.extend(admissible_v)
             elif two_tokens[0] in ['JOIN']:
                 if isinstance(variables[int(token[1:])], str):  # literal
-                    if self._dataset in ["graphq", "gq1"]:
+                    if self._dataset in ["graphq", "grail"]:
                         admissible_constants.extend(
                             self.get_attributes_for_value(variables[int(token[1:])], add_noise=add_noise,
                                                           use_ontology=False)
@@ -619,13 +619,13 @@ class KBEngine:
             elif two_tokens[0][0] == '#':  # (AND #1 #2)
                 admissible_constants.extend([')'])
             else:
-                if self._dataset in ["graphq", "gq1"]:
+                if self._dataset in ["graphq", "grail"]:
                     print("Unexpected:", two_tokens[0])
                 elif self._dataset == "webq":
                     assert isinstance(variables[int(token[1:])], str)
                     assert two_tokens[0] in self._tc_attributes
                     admissible_constants.append(')')
-        elif self._dataset in ["graphq", "gq1"] and token in self._attributes:
+        elif self._dataset in ["graphq", "grail"] and token in self._attributes:
             admissible_constants.append(')')
         elif self._dataset in ["webq", "cwq"] and token in self._tc_attributes and len(predictions) > 2 and predictions[
             -3] == 'TC':
@@ -678,7 +678,7 @@ class KBEngine:
             if two_tokens[0] not in ['ARGMAX', 'ARGMIN']:
                 admissible_constants.extend([')'])
             else:  # This is not gonna happen for webq or cwq
-                assert self._dataset in ["graphq", "gq1"]
+                assert self._dataset in ["graphq", "grail"]
                 admissible_constants.extend(self.get_relations_for_class(token, reverse=True, add_noise=add_noise))
                 admissible_constants.extend(self.get_attributes_for_class(token, add_noise=add_noise))
 
