@@ -1,0 +1,125 @@
+{
+    "dataset_reader": {
+        "type": "arcane_seq2seq",
+        "dataset": "grail",
+        "delexicalization": false,
+        "init_var_representation": "utterance",
+        "perfect_entity_linking": true,
+        "source_add_end_token": false,
+        "source_add_start_token": false,
+        "source_token_indexers": {
+            "tokens": {
+                "type": "pretrained_transformer",
+                "do_lowercase": true,
+                "model_name": "bert-base-uncased",
+                "namespace": "bert"
+            }
+        },
+        "source_tokenizer": {
+            "type": "pretrained_transformer",
+            "do_lowercase": true,
+            "model_name": "bert-base-uncased"
+        },
+        "target_token_indexers": {
+            "tokens": {
+                "namespace": "target_tokens"
+            }
+        },
+        "training": true,
+        "using_plm": true
+    },
+    "iterator": {
+        "type": "basic",
+        "batch_size": 1,
+        "track_epoch": true
+    },
+    "model": {
+        "type": "arcane_seq2seq",
+        "add_noise": false,
+        "attention_function": {
+            "type": "dot_product"
+        },
+        "beam_size": 3,
+        "dataset": "grail",
+        "dropout": 0.5,
+        "encoder": {
+            "type": "lstm",
+            "hidden_size": 768,
+            "input_size": 768,
+            "num_layers": 1
+        },
+        "init_var_representation": "utterance",
+        "max_decoding_steps": 100,
+        "source_embedder": {
+            "allow_unmatched_keys": true,
+            "tokens": {
+                "type": "my_pretrained_transformer",
+                "model_name": "bert-base-uncased"
+            }
+        },
+        "target_embedding_dim": 768,
+        "target_namespace": "target_tokens",
+        "using_plm": true
+    },
+    "train_data_path": "data/grailqa_v1.0_train.json",
+    "validation_data_path": "data/grailqa_v1.0_dev.json",
+    "trainer": {
+        "cuda_device": 6,
+        "num_epochs": 200,
+        "num_gradient_accumulation_steps": 16,
+        "optimizer": {
+            "type": "adam",
+            "lr": 0.001,
+            "parameter_groups": [
+                [
+                    [
+                        "source_embedder"
+                    ],
+                    {
+                        "lr": 2e-05
+                    }
+                ]
+            ]
+        },
+        "patience": 15,
+        "summary_interval": 1,
+        "validation_metric": "+exact_match"
+    },
+    "vocabulary": {
+        "directory_path": "vocabulary/grail"
+    },
+    "validation_dataset_reader": {
+        "type": "arcane_seq2seq",
+        "dataset": "grail",
+        "delexicalization": false,
+        "init_var_representation": "utterance",
+        "perfect_entity_linking": true,
+        "source_add_end_token": false,
+        "source_add_start_token": false,
+        "source_token_indexers": {
+            "tokens": {
+                "type": "pretrained_transformer",
+                "do_lowercase": true,
+                "model_name": "bert-base-uncased",
+                "namespace": "bert"
+            }
+        },
+        "source_tokenizer": {
+            "type": "pretrained_transformer",
+            "do_lowercase": true,
+            "model_name": "bert-base-uncased"
+        },
+        "target_token_indexers": {
+            "tokens": {
+                "namespace": "target_tokens"
+            }
+        },
+        "training": false,
+        "using_plm": true
+    },
+    "validation_iterator": {
+        "type": "basic",
+        "batch_size": 8,
+        "track_epoch": true
+    }
+}
