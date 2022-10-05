@@ -11,3 +11,13 @@
 
 <img width="677" alt="image" src="https://user-images.githubusercontent.com/15921425/193238484-399a05c3-50fa-44b0-add9-16a4ec1cb8fe.png">
 
+To train the model, run
+```
+$ PYTHONHASHSEED=23 python run.py train [your_config_file_for_training (e.g., grail_train.json)]  --include-package arcane --include-package arcane_reader --include-package utils.bert_interface --include-package utils.my_pretrained_transformer_indexer --include-package utils.my_pretrained_transformer_tokenizer -s [your_path_specified_for_training]
+```
+To make predictions using a trained model, run
+```
+$ PYTHONHASHSEED=23 python run.py predict [path_for_trained_model] [path_for_test_dataset] --include-package arcane --include-package arcane_reader --include-package utils.bert_interface --include-package utils.my_pretrained_transformer_indexer --include-package utils.my_pretrained_transformer_tokenizer --use-dataset-reader --predictor seq2seq -c [your_config_file_for_inference (e.g., grail_infer.json)]  --output-file [output_file_name] --cuda-device 0
+```
+
+We will provide more detailed instructions soon. Please stay tuned!
