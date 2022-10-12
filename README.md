@@ -99,4 +99,18 @@ seq2seq
 ```
 
 ## Citation
-TBD
+```
+@inproceedings{gu-su-2022-arcaneqa,
+    title = "{A}rcane{QA}: Dynamic Program Induction and Contextualized Encoding for Knowledge Base Question Answering",
+    author = "Gu, Yu  and
+      Su, Yu",
+    booktitle = "Proceedings of the 29th International Conference on Computational Linguistics",
+    month = oct,
+    year = "2022",
+    address = "Gyeongju, Republic of Korea",
+    publisher = "International Committee on Computational Linguistics",
+    url = "https://aclanthology.org/2022.coling-1.148",
+    pages = "1718--1731",
+    abstract = "Question answering on knowledge bases (KBQA) poses a unique challenge for semantic parsing research due to two intertwined challenges: large search space and ambiguities in schema linking. Conventional ranking-based KBQA models, which rely on a candidate enumeration step to reduce the search space, struggle with flexibility in predicting complicated queries and have impractical running time. In this paper, we present ArcaneQA, a novel generation-based model that addresses both the large search space and the schema linking challenges in a unified framework with two mutually boosting ingredients: dynamic program induction for tackling the large search space and dynamic contextualized encoding for schema linking. Experimental results on multiple popular KBQA datasets demonstrate the highly competitive performance of ArcaneQA in both effectiveness and efficiency.",
+}
+```
