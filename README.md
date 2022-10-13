@@ -29,6 +29,7 @@ ArcaneQA/
     ├─ fb_types: Class hierarchy in Freebase
     ├─ reverse_properties: Reverse properties in Freebase 
     ├─ commons/: Corresponding files of Freebase Commons subset
+├─ answer_typing/: Answer typing results for GrailQA
 ├─ el_results/: Entity linking results 
 ├─ vocabulary/: Preprocessed vocabulary
 ├─ cache/: Cached results for SPARQL queries, which are used to accelerate the experiments by caching many SPARQL query results offline
