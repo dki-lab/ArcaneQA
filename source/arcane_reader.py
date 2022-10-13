@@ -200,8 +200,6 @@ class Arcane_DatasetReader(DatasetReader):
             qid = MetadataField(item['qid'])
 
         #  To be consistent with BERT NER, so I can easily get the start and end position of a mention
-        #  I also keep the original question because the regex for value extractor is written based on original
-        #  questions
         item['question'] = ' '.join(word_tokenize(item['question']))
         item['question'] = item['question'].replace('``', '"').replace("''", '"')
 
