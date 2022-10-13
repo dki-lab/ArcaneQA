@@ -130,4 +130,4 @@ Many thanks to the feedbacks&discussions from people in OSU NLP Group.
 
 ## Contact
 Please consider creating a new issue or directly sending an email to [Yu Gu](gu.826@osu.edu).
-Normally, we will respond to your questions very promptly.
+Normally, we will respond to your questions within 1-2 days.
