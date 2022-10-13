@@ -107,6 +107,15 @@ seq2seq
 0
 ```
 
+We still need to process the output from AllenNLP's `predict` command into the data format we want. To this end, we can use `process_predictions.py` as follows,
+```
+$ python process_predictions.py
+--dataset [grail_dev|grail_test|graphq|webq]
+--prediction [output from AllenNLP's predict command]
+--output [file name of the final output]
+
+```
+
 ## Citation
 Please please consider citing the following BibTeX entry if you find our work helpful to your research.
 ```
