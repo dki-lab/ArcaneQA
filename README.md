@@ -50,7 +50,7 @@ ArcaneQA/
 
 
 ## Setup
-We recommend you following the detailed instructions in https://github.com/dki-lab/GrailQA.
+We recommend you following the detailed instructions in our [GrailQA Repo](https://github.com/dki-lab/GrailQA).
 
 ## Running Experiments
 To train the model, run
@@ -99,6 +99,7 @@ seq2seq
 ```
 
 ## Citation
+Please please consider citing the following BibTeX entry if you find our work helpful to your research.
 ```
 @inproceedings{gu-su-2022-arcaneqa,
     title = "{A}rcane{QA}: Dynamic Program Induction and Contextualized Encoding for Knowledge Base Question Answering",
@@ -114,3 +115,6 @@ seq2seq
     abstract = "Question answering on knowledge bases (KBQA) poses a unique challenge for semantic parsing research due to two intertwined challenges: large search space and ambiguities in schema linking. Conventional ranking-based KBQA models, which rely on a candidate enumeration step to reduce the search space, struggle with flexibility in predicting complicated queries and have impractical running time. In this paper, we present ArcaneQA, a novel generation-based model that addresses both the large search space and the schema linking challenges in a unified framework with two mutually boosting ingredients: dynamic program induction for tackling the large search space and dynamic contextualized encoding for schema linking. Experimental results on multiple popular KBQA datasets demonstrate the highly competitive performance of ArcaneQA in both effectiveness and efficiency.",
 }
 ```
+
+## Acknowledgement
+Many thanks to the feedbacks & helpful discussions from people in OSU NLP Group.
