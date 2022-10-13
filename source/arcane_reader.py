@@ -106,8 +106,8 @@ class Arcane_DatasetReader(DatasetReader):
         self._eval = eval
         if not self._perfect_el:
             if self._dataset == 'grail':
-                # with open(path + "/../el_results/grail_test.json") as f:
-                with open(path + "/../el_results/grail_dev.json") as f:
+                with open(path + "/../el_results/grail_test.json") as f:
+                # with open(path + "/../el_results/grail_dev.json") as f:
                     self._el_results = json.load(f)
             elif self._dataset == 'graphq':
                 with open(path + "/../el_results/graphq_test.json") as f:
