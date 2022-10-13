@@ -118,3 +118,7 @@ Please please consider citing the following BibTeX entry if you find our work he
 
 ## Acknowledgement
 Many thanks to the feedbacks & helpful discussions from people in OSU NLP Group.
+
+## Contact
+Please consider creating a new issue or directly sending an email to [Yu Gu](gu.826@osu.edu).
+Normally, we will respond to your questions very promptly.
