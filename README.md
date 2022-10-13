@@ -113,7 +113,6 @@ $ python process_predictions.py
 --dataset [grail_dev|grail_test|graphq|webq]
 --prediction [output from AllenNLP's predict command]
 --output [file name of the final output]
-
 ```
 
 ## Citation
