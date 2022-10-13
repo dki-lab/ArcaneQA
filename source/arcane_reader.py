@@ -118,6 +118,7 @@ class Arcane_DatasetReader(DatasetReader):
 
         if not self._training and self._dataset == "grail":
             self._answer_types = defaultdict(lambda: [])
+            # with open(path + "/../answer_typing/answer_types.dev.txt", 'r') as f:
             with open(path + "/../answer_typing/answer_types_0308.test.txt", 'r') as f:
                 for line in f:
                     line = line.replace("\n", '')
