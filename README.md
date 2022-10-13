@@ -33,6 +33,7 @@ ArcaneQA/
 ├─ vocabulary/: Preprocessed vocabulary
 ├─ cache/: Cached results for SPARQL queries, which are used to accelerate the experiments by caching many SPARQL query results offline
 ├─ saved_models/: Trained models
+├─ predictions/: ArcaneQA's predictions on different KBQA benchmarks
 ├─ source/:
     ├─ utils/:
         ├─ bert_interface.py: Interface to BERT 
@@ -53,7 +54,16 @@ ArcaneQA/
 We recommend you following the detailed instructions in our [GrailQA Repo](https://github.com/dki-lab/GrailQA).
 
 ## Running Experiments
-To train the model, run
+#### Download all the necessary files and put them under the corresponding directories
+1. Download vocab files:
+
+2. Download cache files:
+
+3. Download saved models:
+
+
+#### Commands
+To train the model, run the following command
 ```
 $ PYTHONHASHSEED=23 python run.py 
 train 
@@ -71,7 +81,7 @@ utils.my_pretrained_transformer_tokenizer
 -s 
 [your_path_specified_for_training]
 ```
-To make predictions using a trained model, run
+To make predictions using a trained model, run the following command
 ```
 $ PYTHONHASHSEED=23 python run.py 
 predict 
@@ -117,7 +127,7 @@ Please please consider citing the following BibTeX entry if you find our work he
 ```
 
 ## Acknowledgement
-Many thanks to the feedbacks & helpful discussions from people in OSU NLP Group.
+Many thanks to the feedbacks&discussions from people in OSU NLP Group.
 
 ## Contact
 Please consider creating a new issue or directly sending an email to [Yu Gu](gu.826@osu.edu).
