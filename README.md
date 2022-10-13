@@ -56,11 +56,9 @@ We recommend you following the detailed instructions in our [GrailQA Repo](https
 
 ## Running Experiments
 #### Download all the necessary files and put them under the corresponding directories
-1. Download vocab files:
+1. Download cache files:
 
-2. Download cache files:
-
-3. Download saved models:
+2. Download saved models:
 
 
 #### Commands
