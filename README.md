@@ -54,7 +54,7 @@ ArcaneQA/
 ## Setup
 We recommend you following the detailed instructions in our [GrailQA Repo](https://github.com/dki-lab/GrailQA).
 
-## Running Experiments
+## Reproducing Our Results
 #### Download all the necessary files and put them under the corresponding directories
 1. Download cache files:
 
