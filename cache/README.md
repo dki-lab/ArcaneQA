@@ -1,0 +1,1 @@
+Download cache files of KB query executions from https://1drv.ms/u/s!AuJiG47gLqTzoG9zmReRGBEhnqw-?e=iqNRQa and put them here.

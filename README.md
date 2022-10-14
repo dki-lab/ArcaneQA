@@ -57,9 +57,9 @@ We recommend you following the detailed instructions in our [GrailQA Repo](https
 ## Reproducing Our Results
 #### Download all the necessary files and put them under the corresponding directories
 1. Download cache files:
-
+https://1drv.ms/u/s!AuJiG47gLqTzoG9zmReRGBEhnqw-?e=iqNRQa
 2. Download saved models:
-
+https://1drv.ms/u/s!AuJiG47gLqTzoHGJ8UCnNvAx9M4g?e=lDoGRc
 
 #### Commands
 To train the model, run the following command
