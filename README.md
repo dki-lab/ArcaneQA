@@ -115,6 +115,8 @@ $ python process_predictions.py
 --output [file name of the final output]
 ```
 
+To test the inference speed without caching, you may simply delete or rename files under `/cache`.
+
 ## Citation
 Please please consider citing the following BibTeX entry if you find our work helpful to your research.
 ```
