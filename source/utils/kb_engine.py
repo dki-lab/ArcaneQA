@@ -29,16 +29,16 @@ def timer(func):
 
 def get_vocab(dataset: str):
     if dataset == "grail":
-        with open(path + '/vocab_files/grailqa.json') as f:
+        with open(path + '/../../vocabulary/grailqa.json') as f:
             data = json.load(f)
         return set(data["relations"]), set(data["classes"]), set(data["attributes"])
     elif dataset == "graphq":
-        with open(path + '/vocab_files/gq1.json') as f:
+        with open(path + '/../../vocabulary/gq1.json') as f:
             data = json.load(f)
         return set(data["relations"]), set(data["classes"]), set(data["attributes"])
     elif dataset == "webq":
         # with open(path + '/vocab_files/webq.json') as f:
-        with open(path + '/vocab_files/webq_full.json') as f:
+        with open(path + '/../../vocabulary/webq_full.json') as f:
             data = json.load(f)
         return set(data["relations"]), set(data["classes"]), set(data["attributes"]), set(data["tc_attributes"]), set(
             data["cons_attributes"]), data["cons_ids"]
@@ -55,11 +55,11 @@ def get_ontology(dataset: str):
     date_attributes = set()
     numerical_attributes = set()
     if dataset == "grail":
-        fb_type_file = path + "/../ontology/commons/fb_types"
-        fb_roles_file = path + "/../ontology/commons/fb_roles"
+        fb_type_file = path + "/../../ontology/commons/fb_types"
+        fb_roles_file = path + "/../../ontology/commons/fb_roles"
     elif dataset == "graphq":
-        fb_type_file = path + "/../ontology/fb_types"
-        fb_roles_file = path + "/../ontology/fb_roles"
+        fb_type_file = path + "/../../ontology/fb_types"
+        fb_roles_file = path + "/../../ontology/fb_roles"
 
     else:  # webq does not need these information
         return class_out_edges, class_in_edges, relation_domain, relation_range, date_attributes, numerical_attributes
@@ -102,9 +102,9 @@ class KBEngine:
                 dataset)
 
         if dataset == "grail":
-            with open('ontology/domain_dict', 'r') as f:
+            with open(path + '/../../ontology/domain_dict', 'r') as f:
                 self._domain_dict = json.load(f)
-            with open('ontology/domain_info', 'r') as f:
+            with open(path + '/../../ontology/domain_info', 'r') as f:
                 self._domain_info = json.load(f)
         self._class_out, self._class_in, self._relation_d, self._relation_r, self._date_attributes, \
         self._numerical_attributes = get_ontology(dataset)

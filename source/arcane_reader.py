@@ -148,33 +148,39 @@ class Arcane_DatasetReader(DatasetReader):
                 if item['qid'] in [2102902009000]:  # will exceed maximum length constraint
                     continue
 
-                el_hypo = 0  # hypothesis id
-                el_results = self._el_results[str(item['qid'])]
-                if len(el_results) > 1:
-                    if self._dataset == "webq":
-                        time_constraints = {}
+                if not self._perfect_el:
+                    el_hypo = 0  # hypothesis id
+                    el_results = self._el_results[str(item['qid'])]
+                    if len(el_results) > 1:
+                        if self._dataset == "webq":
+                            time_constraints = {}
+                            for er in el_results:
+                                if len(el_results[er]) == 1:
+                                    if isinstance(el_results[er], int):
+                                        time_constraints[er] = [str(el_results[er][0])]
                         for er in el_results:
-                            if len(el_results[er]) == 1:
-                                if isinstance(el_results[er], int):
-                                    time_constraints[er] = [str(el_results[er][0])]
-                    for er in el_results:
-                        if self._dataset != "webq":
-                            instance = self.text_to_instance(item, el_results={er: el_results[er]},
-                                                            el_hypo=el_hypo)
-                        else:
-                            if er in time_constraints:
-                                continue
-                            else:
-                                webq_el = {k: v for k, v in time_constraints.items()}
-                                webq_el[er] = el_results[er]
-                                instance = self.text_to_instance(item, el_results=webq_el,
+                            if self._dataset != "webq":
+                                instance = self.text_to_instance(item, el_results={er: el_results[er]},
                                                                  el_hypo=el_hypo)
-                        if instance is not None:
-                            el_hypo += 1
-                            yield instance
-                instance = self.text_to_instance(item, el_results=el_results, el_hypo=el_hypo)
-                if instance is not None:
-                    yield instance
+                            else:
+                                if er in time_constraints:
+                                    continue
+                                else:
+                                    webq_el = {k: v for k, v in time_constraints.items()}
+                                    webq_el[er] = el_results[er]
+                                    instance = self.text_to_instance(item, el_results=webq_el,
+                                                                     el_hypo=el_hypo)
+                            if instance is not None:
+                                el_hypo += 1
+                                yield instance
+                    instance = self.text_to_instance(item, el_results=el_results, el_hypo=el_hypo)
+                    if instance is not None:
+                        yield instance
+
+                else:
+                    instance = self.text_to_instance(item)
+                    if instance is not None:
+                        yield instance
 
         if self._source_max_tokens and self._source_max_exceeded:
             logger.info(
@@ -206,7 +212,7 @@ class Arcane_DatasetReader(DatasetReader):
 
         source_string = item['question'].lower()
 
-        if not self._training and self._dataset == "graphq":
+        if not self._training and self._dataset == "grail":
             answer_types = self._answer_types[str(item['qid'])]
         else:
             answer_types = None
@@ -282,7 +288,7 @@ class Arcane_DatasetReader(DatasetReader):
                     variable_to_id[item['topic_entity']] = variable_id
                     variable_id += 1
         else:
-            for mention in el_results:
+            for mention in el_results:  # el_results include both entities and literals
                 for entity in el_results[mention]:
                     try:
                         if self._init_var_rep == 'utterance':
@@ -293,9 +299,37 @@ class Arcane_DatasetReader(DatasetReader):
                         variable_to_id[entity] = variable_id
                         variable_id += 1
                     except UnboundLocalError:
-                        print(mention, tokenized_source)
+                        # print(mention, tokenized_source)
+                        # just skip this variable; this mostly happens for literals
                         pass
         # print(initial_map)
+
+        if self._perfect_el:  # also adding literals
+            for node in item['graph_query']['nodes']:
+                if self._dataset in ["webq", "cwq"]:
+                    if node["time_constraint"] != "none" and node["time_constraint"][0] != "NOW":
+                        if self._init_var_rep == 'utterance':
+                            start, end = self._get_mention_span(str(node["time_constraint"][0]), tokenized_source)
+                            initial_map.append((str(node["time_constraint"][0]), (start, end), 1))
+                        elif self._init_var_rep == 'surface':
+                            initial_map.append((str(node["time_constraint"][0]), str(node["time_constraint"][0])))
+                        variable_to_id[str(node["time_constraint"][0])] = variable_id
+                        variable_id += 1
+
+                if node['node_type'] == 'literal' and node['function'] not in ['argmin', 'argmax']:
+                    if self._dataset in ["webq", "cwq"] and node["implicit"] == 1:
+                        continue
+                    try:
+                        if self._init_var_rep == 'utterance':
+                            start, end = self._get_mention_span(' '.join(word_tokenize(node['friendly_name'])).lower(),
+                                                                tokenized_source)
+                            initial_map.append((node['id'], (start, end)))
+                        elif self._init_var_rep == 'surface':
+                            initial_map.append((node['id'], ' '.join(word_tokenize(node['friendly_name']))))
+                        variable_to_id[node['id']] = variable_id
+                        variable_id += 1
+                    except UnboundLocalError:
+                        pass
 
         if self._delexicalization:  # I guarantee that there is no overlap between different mention spans
             assert self._init_var_rep == 'utterance'
