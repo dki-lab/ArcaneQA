@@ -138,6 +138,8 @@ Please please consider citing the following BibTeX entry if you find our work he
 ## Acknowledgement
 Many thanks to the feedbacks&discussions from people in OSU NLP Group.
 
+We would also like to thank [Ritam Dutt](https://shorit.github.io) for first trying out our code in this repository and help us to identify some bugs during code cleaning at an early stage.
+
 ## Contact
 Please consider creating a new issue or directly sending an email to [Yu Gu](mailto:gu.826@osu.edu).
 Normally, we will respond to your questions within 1-2 days.
