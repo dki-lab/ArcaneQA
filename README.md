@@ -136,7 +136,7 @@ Please please consider citing the following BibTeX entry if you find our work he
 ```
 
 ## Acknowledgement
-Many thanks to the feedbacks&discussions from people in OSU NLP Group. 
+Many thanks to the thoughtful comments from the OSU NLP Group and the anonymous reviewers. 
 
 We would also like to thank [Ritam Dutt](https://shorit.github.io) for first trying out our code in this repository and help us to identify some bugs during code cleaning at an early stage.
 
