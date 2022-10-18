@@ -7,7 +7,7 @@
 
 >ArcaneQA is a generation-based KBQA model built upon the encoder-decoder framework. It features two mutually-boosting modules: ***dynamic program induction*** and ***dynamic contextualized encoding*** in a unified framework. For dynamic program induction, we **unify the meaning representation in several KBQA datasets**, and our annotations are also available in this repo; For dynamic contextualized encoding, we **introduce a novel idea of applying pre-trained language models (PLMs) to KBQA**.
 
->This is the accompanying code&data for the paper "[ArcaneQA: Dynamic Program Induction and Contextualized Encoding for Knowledge Base Question Answering](https://arxiv.org/pdf/2204.08109.pdf)" published at COLING 2022.
+>This is the accompanying code&data for the paper "[ArcaneQA: Dynamic Program Induction and Contextualized Encoding for Knowledge Base Question Answering](https://arxiv.org/pdf/2204.08109.pdf)" published at COLING 2022 (<span color="red">Outstanding Paper Award</span>).
 
 <img width="677" alt="image" src="https://user-images.githubusercontent.com/15921425/193238484-399a05c3-50fa-44b0-add9-16a4ec1cb8fe.png">
 
@@ -136,7 +136,7 @@ Please please consider citing the following BibTeX entry if you find our work he
 ```
 
 ## Acknowledgement
-Many thanks to the feedbacks&discussions from people in OSU NLP Group.
+Many thanks to the feedbacks&discussions from people in OSU NLP Group. 
 
 We would also like to thank [Ritam Dutt](https://shorit.github.io) for first trying out our code in this repository and help us to identify some bugs during code cleaning at an early stage.
 
