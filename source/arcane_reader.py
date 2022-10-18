@@ -106,8 +106,8 @@ class Arcane_DatasetReader(DatasetReader):
         self._eval = eval
         if not self._perfect_el:
             if self._dataset == 'grail':
-                with open(path + "/../el_results/grail_test.json") as f:
-                # with open(path + "/../el_results/grail_dev.json") as f:
+                # with open(path + "/../el_results/grail_test.json") as f:
+                with open(path + "/../el_results/grail_combined.json") as f:
                     self._el_results = json.load(f)
             elif self._dataset == 'graphq':
                 with open(path + "/../el_results/graphq_test.json") as f:
@@ -118,8 +118,8 @@ class Arcane_DatasetReader(DatasetReader):
 
         if not self._training and self._dataset == "grail":
             self._answer_types = defaultdict(lambda: [])
-            # with open(path + "/../answer_typing/answer_types.dev.txt", 'r') as f:
-            with open(path + "/../answer_typing/answer_types_0308.test.txt", 'r') as f:
+            with open(path + "/../answer_typing/answer_types_grail_combined.txt", 'r') as f:
+            # with open(path + "/../answer_typing/answer_types_0308.test.txt", 'r') as f:
                 for line in f:
                     line = line.replace("\n", '')
                     fields = line.split('\t')
