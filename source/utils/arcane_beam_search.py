@@ -9,8 +9,6 @@ from allennlp.common.checks import ConfigurationError
 StateType = Dict[str, torch.Tensor]  # pylint: disable=invalid-name
 StepFunctionType = Callable[[torch.Tensor, StateType], Tuple[torch.Tensor, StateType]]  # pylint: disable=invalid-name
 
-JOINT_EL = False
-
 
 class Arcane_BeamSearch:
     """
@@ -170,12 +168,8 @@ class Arcane_BeamSearch:
                 raise Exception("Unexpected data type for elements in state!")
 
         for timestep in range(self.max_steps - 1):
-            if timestep != 2 or not JOINT_EL:
-                # shape: (batch_size * beam_size,)
-                last_predictions = predictions[-1].reshape(batch_size * self.beam_size)
-            else:
-                # shape: (batch_size * beam_size,)
-                last_predictions = predictions[-1].reshape(batch_size * 100)
+            # shape: (batch_size * beam_size,)
+            last_predictions = predictions[-1].reshape(batch_size * self.beam_size)
 
             # If every predicted token from the last step is `self._end_index`,
             # then we can stop early.
@@ -188,66 +182,35 @@ class Arcane_BeamSearch:
             # shape: (batch_size * beam_size, num_classes)
             class_log_probabilities, state = step(last_predictions, state)
 
-            if timestep != 2 or not JOINT_EL:
-                # shape: (batch_size * beam_size, num_classes)
-                last_predictions_expanded = last_predictions.unsqueeze(-1).expand(
-                    batch_size * self.beam_size,
-                    num_classes
-                )
-            else:
-                # shape: (batch_size * 100, num_classes)
-                last_predictions_expanded = last_predictions.unsqueeze(-1).expand(
-                    batch_size * 100,
-                    num_classes
-                )
+            # shape: (batch_size * beam_size, num_classes)
+            last_predictions_expanded = last_predictions.unsqueeze(-1).expand(
+                batch_size * self.beam_size,
+                num_classes
+            )
 
             # Here we are finding any beams where we predicted the end token in
             # the previous timestep and replacing the distribution with a
             # one-hot distribution, forcing the beam to predict the end token
             # this timestep as well.
             # shape: (batch_size * beam_size, num_classes)
-            if timestep != 2 or not JOINT_EL:
-                cleaned_log_probabilities = torch.where(
-                    last_predictions_expanded == self._end_index,
-                    log_probs_after_end,
-                    class_log_probabilities
-                )
-            else:
-                log_probs_after_end_2 = start_class_log_probabilities.new_full(
-                    (batch_size * 100, num_classes), float("-inf"))
-                log_probs_after_end_2[:, self._end_index] = 0.
-                cleaned_log_probabilities = torch.where(
-                    last_predictions_expanded == self._end_index,
-                    log_probs_after_end_2,
-                    class_log_probabilities
-                )
+            cleaned_log_probabilities = torch.where(
+                last_predictions_expanded == self._end_index,
+                log_probs_after_end,
+                class_log_probabilities
+            )
 
-            if timestep != 1 or not JOINT_EL:
-                # shape (both): (batch_size * beam_size, per_node_beam_size)
-                top_log_probabilities, predicted_classes = \
-                    cleaned_log_probabilities.topk(self.per_node_beam_size)
+            # shape (both): (batch_size * beam_size, per_node_beam_size)
+            top_log_probabilities, predicted_classes = \
+                cleaned_log_probabilities.topk(self.per_node_beam_size)
 
-                # Here we expand the last log probabilities to (batch_size * beam_size, per_node_beam_size)
-                # so that we can add them to the current log probs for this timestep.
-                # This lets us maintain the log probability of each element on the beam.
-                # shape: (batch_size * beam_size, per_node_beam_size)
-                expanded_last_log_probabilities = last_log_probabilities. \
-                    unsqueeze(2). \
-                    expand(batch_size, -1, self.per_node_beam_size). \
-                    reshape(-1, self.per_node_beam_size)
-            else:
-                # shape (both): (batch_size * beam_size, 100)
-                top_log_probabilities, predicted_classes = \
-                    cleaned_log_probabilities.topk(100)
-
-                # Here we expand the last log probabilities to (batch_size * beam_size, per_node_beam_size)
-                # so that we can add them to the current log probs for this timestep.
-                # This lets us maintain the log probability of each element on the beam.
-                # shape: (batch_size * beam_size, per_node_beam_size)
-                expanded_last_log_probabilities = last_log_probabilities. \
-                    unsqueeze(2). \
-                    expand(batch_size, -1, 100). \
-                    reshape(-1, 100)
+            # Here we expand the last log probabilities to (batch_size * beam_size, per_node_beam_size)
+            # so that we can add them to the current log probs for this timestep.
+            # This lets us maintain the log probability of each element on the beam.
+            # shape: (batch_size * beam_size, per_node_beam_size)
+            expanded_last_log_probabilities = last_log_probabilities. \
+                unsqueeze(2). \
+                expand(batch_size, -1, self.per_node_beam_size). \
+                reshape(-1, self.per_node_beam_size)
 
             if not self.length_normalization:
                 # Directly summing the log probabilities might favor shorter predictions
@@ -261,55 +224,18 @@ class Arcane_BeamSearch:
                     (top_log_probabilities + expanded_last_log_probabilities * length) / \
                     torch.where(length < timestep + 1, length, length + 1)
 
-            if timestep != 1 or not JOINT_EL:
-                if timestep != 2 or not JOINT_EL:
-                    # shape: (batch_size, beam_size * per_node_beam_size)
-                    reshaped_summed = summed_top_log_probabilities. \
-                        reshape(batch_size, self.beam_size * self.per_node_beam_size)
+            # shape: (batch_size, beam_size * per_node_beam_size)
+            reshaped_summed = summed_top_log_probabilities. \
+                reshape(batch_size, self.beam_size * self.per_node_beam_size)
 
-                    # shape: (batch_size, beam_size * per_node_beam_size)
-                    reshaped_predicted_classes = predicted_classes. \
-                        reshape(batch_size, self.beam_size * self.per_node_beam_size)
-                else:
-                    # shape: (batch_size, beam_size * per_node_beam_size)
-                    reshaped_summed = summed_top_log_probabilities. \
-                        reshape(batch_size, 100 * self.per_node_beam_size)
-
-                    # shape: (batch_size, beam_size * per_node_beam_size)
-                    reshaped_predicted_classes = predicted_classes. \
-                        reshape(batch_size, 100 * self.per_node_beam_size)
-            else:
-                # shape: (batch_size, beam_size * per_node_beam_size)
-                reshaped_summed = summed_top_log_probabilities. \
-                    reshape(batch_size, self.beam_size * 100)
-
-                # shape: (batch_size, beam_size * per_node_beam_size)
-                reshaped_predicted_classes = predicted_classes. \
-                    reshape(batch_size, self.beam_size * 100)
-
-            # logging beam search progress
-            # if timestep > 0:
-            # print(f"timestep: {timestep} ")
-            # for i, beam_i in enumerate(state["predictions"]):
-            #     beam_instance = []
-            #     for token in beam_i:
-            #         if token.item() < 8319:
-            #             if token.item() == self._end_index:
-            #                 break
-            #             beam_instance.append(
-            #                 self.vocab.get_token_from_index(token.item(), namespace="target_tokens"))
-            #         else:
-            #             beam_instance.append('#' + str(token.item() - 8319))
-            # print(i, ' '.join(beam_instance),
-            #       restricted_beam_log_probs[i // self.beam_size][i % self.beam_size].item())
+            # shape: (batch_size, beam_size * per_node_beam_size)
+            reshaped_predicted_classes = predicted_classes. \
+                reshape(batch_size, self.beam_size * self.per_node_beam_size)
 
             # Keep only the top `beam_size` beam indices.
             # restricted_beam_log_probs is basically the log probabilities of instances in current beam
             # shape: (batch_size, beam_size), (batch_size, beam_size)
-            if timestep != 1 or not JOINT_EL:
-                restricted_beam_log_probs, restricted_beam_indices = reshaped_summed.topk(self.beam_size)
-            else:
-                restricted_beam_log_probs, restricted_beam_indices = reshaped_summed.topk(100)
+            restricted_beam_log_probs, restricted_beam_indices = reshaped_summed.topk(self.beam_size)
 
             # Use the beam indices to extract the corresponding classes.
             # shape: (batch_size, beam_size)
@@ -325,10 +251,7 @@ class Arcane_BeamSearch:
             # dividing by per_node_beam_size gives the ancestor. (Note that this is integer
             # division as the tensor is a LongTensor.)
             # shape: (batch_size, beam_size)
-            if timestep != 1 or not JOINT_EL:
-                backpointer = restricted_beam_indices / self.per_node_beam_size
-            else:
-                backpointer = restricted_beam_indices / 100
+            backpointer = restricted_beam_indices / self.per_node_beam_size
 
             backpointer = backpointer.type(torch.int64)
             backpointers.append(backpointer)
@@ -343,43 +266,19 @@ class Arcane_BeamSearch:
                         view(batch_size, -1, *([1] * len(last_dims))). \
                         expand(batch_size, -1, *last_dims)
 
-                    if timestep != 1 or not JOINT_EL:
-                        if timestep != 2 or not JOINT_EL:
-                            # shape: (batch_size * beam_size, *)
-                            state[key] = value. \
-                                reshape(batch_size, self.beam_size, *last_dims). \
-                                gather(1, expanded_backpointer). \
-                                reshape(batch_size * self.beam_size, *last_dims)
-                        else:
-                            state[key] = value. \
-                                reshape(batch_size, 100, *last_dims). \
-                                gather(1, expanded_backpointer). \
-                                reshape(batch_size * self.beam_size, *last_dims)
-                    else:
+                    state[key] = value. \
+                        reshape(batch_size, self.beam_size, *last_dims). \
+                        gather(1, expanded_backpointer). \
+                        reshape(batch_size * self.beam_size, *last_dims)
 
-                        # shape: (batch_size * beam_size, *)
-                        state[key] = value. \
-                            reshape(batch_size, self.beam_size, *last_dims). \
-                            gather(1, expanded_backpointer). \
-                            reshape(batch_size * 100, *last_dims)
                 elif isinstance(value, list):
                     backpointer = backpointer.view(-1)
                     # assert len(backpointer) == len(value)
                     original_value = deepcopy(value)
-                    if timestep != 1 or not JOINT_EL:
-                        if timestep != 2 or not JOINT_EL:
-                            for i in range(len(value)):
-                                value[i] = deepcopy(
-                                    original_value[backpointer[i] + (i // self.beam_size) * self.beam_size])
-                        else:
-                            value = []
-                            for i in range(len(backpointer)):
-                                value.append(
-                                    deepcopy(original_value[backpointer[i] + (i // self.beam_size) * self.beam_size]))
-                    else:
-                        value = []
-                        for i in range(len(backpointer)):
-                            value.append(deepcopy(original_value[backpointer[i] + (i // 100) * 100]))
+                    for i in range(len(value)):
+                        value[i] = deepcopy(
+                            original_value[backpointer[i] + (i // self.beam_size) * self.beam_size])
+
                     state[key] = value
 
                 else:
