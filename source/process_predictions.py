@@ -5,9 +5,9 @@ from collections import defaultdict
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument("dataset", help="kbqa dataset: grail_dev, grail_test, graphq, or webq")
-parser.add_argument("prediction", help="path to predictions from AllenNLP's predict command")
-parser.add_argument("output", help="name of the output file")
+parser.add_argument("--dataset", help="kbqa dataset: grail_dev, grail_test, graphq, or webq")
+parser.add_argument("--prediction", help="path to predictions from AllenNLP's predict command")
+parser.add_argument("--output", help="name of the output file")
 args = parser.parse_args()
 
 '''
