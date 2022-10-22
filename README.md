@@ -49,6 +49,7 @@ ArcaneQA/
         ├─ kb_engine.py: Core functions for KB querying and constrained decoding
         ├─ sparql_cache.py: Cache executions of different types of Sparql queries
     ├─ run.py: Main function
+    ├─ evaluation.py: Evaluation script for WebQSP and GraphQuestions
     ├─ arcane.py: ArcaneQA model class
     ├─ arcane_reader.py: ArcaneQA dataset reader class
 ```
@@ -116,6 +117,23 @@ $ python process_predictions.py
 --dataset [grail_dev|grail_test|graphq|webq]
 --prediction [output from AllenNLP's predict command]
 --output [file name of the final output]
+```
+
+### Evaluate
+For results on GrailQA, we followed the official instruction of GrailQA.
+For WebQSP and GraphQuestions, we adapt the evaluation script from the homepage of GrailQA and release the new evaluation script [evaluation.py](https://github.com/dki-lab/ArcaneQA/blob/main/source/evaluation.py).
+You can use this script to evaluate the predictions via
+```
+$ python evaluation.py
+[path_to_the_dataset_file]
+[path_to_the_prediction_file]
+--fb_roles
+ontology/fb_roles
+--fb_types
+ontology/fb_types
+--reverse_properties
+ontology/reverse_properties
+
 ```
 
 To test the inference speed without caching, you may simply delete or rename files under `/cache`.
