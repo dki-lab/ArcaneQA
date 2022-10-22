@@ -13,7 +13,7 @@ This is the accompanying code & data for the paper "[ArcaneQA: Dynamic Program I
 
 ## :warning: :warning: CORRIGENDUM :warning: :warning:
 
-
+<img width="460" alt="image" src="https://user-images.githubusercontent.com/15921425/197316036-0231897f-cc2f-41a8-98c6-b3bf31cf3f39.png">
 
 ## Package Description
 
