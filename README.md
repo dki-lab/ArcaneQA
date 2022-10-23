@@ -17,7 +17,6 @@ This is the accompanying code & data for the paper "[ArcaneQA: Dynamic Program I
 We find that some key numbers on WebQSP are incorrect, so we immediately fix them to avoid conveying the misleading information as much as we can. The updated table is shown below. Note that, there is no official evaluation for WebQSP, so we also report the performance of RnG-KBQA, the previous SOTA, using the same evaluation script as ours for fair comparison. We have uploaded both our own predictions and the output file of RnG-KBQA (shared by [Xi Ye](https://www.cs.utexas.edu/~xiye/)). You may try our evaluation script on these predictions, and maybe also the predictions from your own model.
 
 
-<img width="460" alt="image" src="https://user-images.githubusercontent.com/15921425/197316036-0231897f-cc2f-41a8-98c6-b3bf31cf3f39.png">
 
 
 
