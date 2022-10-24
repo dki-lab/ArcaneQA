@@ -120,6 +120,9 @@ $ python process_predictions.py
 ```
 
 ### Evaluate
+We give detailed instructions on how to get our evaluation results in Table 2.
+<img width="704" alt="image" src="https://user-images.githubusercontent.com/15921425/197457852-b1e95927-b567-4dc5-b34f-df7e1d611626.png">
+
 For results on GrailQA, we followed the official instruction of GrailQA.
 For WebQSP and GraphQuestions, we adapt the evaluation script from the homepage of GrailQA and release the new evaluation script [evaluation.py](https://github.com/dki-lab/ArcaneQA/blob/main/source/evaluation.py).
 You can use this script to evaluate the predictions via
