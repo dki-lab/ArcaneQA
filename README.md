@@ -49,7 +49,8 @@ ArcaneQA/
         ├─ kb_engine.py: Core functions for KB querying and constrained decoding
         ├─ sparql_cache.py: Cache executions of different types of Sparql queries
     ├─ run.py: Main function
-    ├─ evaluation.py: Evaluation script for WebQSP and GraphQuestionsdf
+    ├─ evaluation.py: Evaluation script for WebQSP and GraphQuestion
+    ├─ webqsp_official_evaluation.py: Official evaluation script for WebQSP
     ├─ arcane.py: ArcaneQA model class
     ├─ arcane_reader.py: ArcaneQA dataset reader class
 ```
