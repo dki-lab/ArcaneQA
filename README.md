@@ -125,8 +125,8 @@ We give detailed instructions on how to get our evaluation results in Table 2.
 <img width="704" alt="image" src="https://user-images.githubusercontent.com/15921425/197457852-b1e95927-b567-4dc5-b34f-df7e1d611626.png">
 
 For results on GrailQA, we followed the official instruction of GrailQA.
-For WebQSP and GraphQuestions, we adapt the evaluation script from the homepage of GrailQA and release the new evaluation script [evaluation.py](https://github.com/dki-lab/ArcaneQA/blob/main/source/evaluation.py).
-You can use this script to evaluate the predictions via
+
+For results on WebQSP, we use use the official evaluation script from [WebQSP](https://www.microsoft.com/en-us/download/details.aspx?id=52763) (i.e., `eval/eval.py`). Similar to [RnG-KBQA](https://github.com/salesforce/rng-kbqa), we adapt the input format using `webqsp_official_evaluation.py`. The official evaluation script considers all possible parses for each question (i.e., some questions in WebQSP are annotated with multiple parses). To eliminate the ambiguity in evaluation, we also implement our own evaluation script to only evaluate the top-1 parse for each question. The usage is as follows,
 ```
 $ python evaluation.py
 [path_to_the_dataset_file]
@@ -139,6 +139,7 @@ ontology/fb_types
 ontology/reverse_properties
 
 ```
+The same script is also used to evaluate results on GraphQuestions.
 
 To test the inference speed without caching, you may simply delete or rename files under `/cache`.
 
