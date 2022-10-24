@@ -11,7 +11,7 @@ This is the accompanying code & data for the paper "[ArcaneQA: Dynamic Program I
 
 <img width="677" alt="image" src="https://user-images.githubusercontent.com/15921425/193238484-399a05c3-50fa-44b0-add9-16a4ec1cb8fe.png">
 
-## :warning: ERRATUM :warning:
+## :warning: ERRATUM & UPDATE :warning:
 `2022-10-21`
 Numbers on WebQSP are fixed.
 
@@ -126,7 +126,7 @@ We give detailed instructions on how to get our evaluation results in Table 2.
 
 For results on GrailQA, we followed the official instruction of GrailQA.
 
-For results on WebQSP, we use use the official evaluation script from [WebQSP](https://www.microsoft.com/en-us/download/details.aspx?id=52763) (i.e., `eval/eval.py`). Similar to [RnG-KBQA](https://github.com/salesforce/rng-kbqa), we adapt the input format using `webqsp_official_evaluation.py`. The official evaluation script considers all possible parses for each question (i.e., some questions in WebQSP are annotated with multiple parses). To eliminate the ambiguity in evaluation, we also implement our own evaluation script to only evaluate the top-1 parse for each question. The usage is as follows,
+For results on WebQSP, we use the official evaluation script from [WebQSP](https://www.microsoft.com/en-us/download/details.aspx?id=52763) (i.e., `eval/eval.py`). Similar to [RnG-KBQA](https://github.com/salesforce/rng-kbqa), we adapt the input format using `webqsp_official_evaluation.py`. The official evaluation script considers all possible parses for each question (i.e., some questions in WebQSP are annotated with multiple parses). To eliminate the ambiguity in evaluation, we also implement our own evaluation script to only evaluate the top-1 parse for each question. The usage is as follows,
 ```
 $ python evaluation.py
 [path_to_the_dataset_file]
