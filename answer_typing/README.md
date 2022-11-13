@@ -1,0 +1,1 @@
+Link to our pre-trained answer typer on GrailQA (we didn't do answer typing for other benchmarks): https://1drv.ms/u/s!AuJiG47gLqTzoHLhlZcPbXM6jWQz?e=jJipqD
