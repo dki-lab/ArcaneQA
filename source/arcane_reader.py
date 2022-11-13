@@ -185,21 +185,21 @@ class Arcane_DatasetReader(DatasetReader):
                                 entities[er] = er_entities
                                 literals[er] = er_literals
 
-                            for er in er_entities:
-                                instance = self.text_to_instance(item, el_results={er: er_entities[er]},
+                            for er in entities:
+                                instance = self.text_to_instance(item, el_results={er: entities[er]},
                                                                  el_hypo=el_hypo)
                                 if instance is not None:
                                     el_hypo += 1
                                     yield instance
-                            for er in er_literals:
-                                instance = self.text_to_instance(item, el_results={er: er_literals[er]},
+                            for er in literals:
+                                instance = self.text_to_instance(item, el_results={er: literals[er]},
                                                                  el_hypo=el_hypo)
                                 if instance is not None:
                                     el_hypo += 1
                                     yield instance
 
-                            instance = self.text_to_instance(item, el_results=er_entities,
-                                                                 el_hypo=el_hypo)
+                            instance = self.text_to_instance(item, el_results=entities,
+                                                             el_hypo=el_hypo)
                             if instance is not None:
                                 el_hypo += 1
                                 yield instance
