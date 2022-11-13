@@ -119,7 +119,7 @@ class Arcane_DatasetReader(DatasetReader):
         if not self._training and self._dataset == "grail":
             self._answer_types = defaultdict(lambda: [])
             with open(path + "/../answer_typing/answer_types_grail_combined.txt", 'r') as f:
-            # with open(path + "/../answer_typing/answer_types_0308.test.txt", 'r') as f:
+                # with open(path + "/../answer_typing/answer_types_0308.test.txt", 'r') as f:
                 for line in f:
                     line = line.replace("\n", '')
                     fields = line.split('\t')
@@ -158,11 +158,8 @@ class Arcane_DatasetReader(DatasetReader):
                                 if len(el_results[er]) == 1:
                                     if isinstance(el_results[er], int):
                                         time_constraints[er] = [str(el_results[er][0])]
-                        for er in el_results:
-                            if self._dataset != "webq":
-                                instance = self.text_to_instance(item, el_results={er: el_results[er]},
-                                                                 el_hypo=el_hypo)
-                            else:
+
+                            for er in el_results:
                                 if er in time_constraints:
                                     continue
                                 else:
@@ -170,9 +167,43 @@ class Arcane_DatasetReader(DatasetReader):
                                     webq_el[er] = el_results[er]
                                     instance = self.text_to_instance(item, el_results=webq_el,
                                                                      el_hypo=el_hypo)
+                                if instance is not None:
+                                    el_hypo += 1
+                                    yield instance
+
+                        if self._dataset == "grail":
+                            entities = {}
+                            literals = {}
+                            for er in el_results:
+                                er_entities = []
+                                er_literals = []
+                                for e in el_results[er]:
+                                    if e.__contains__("^^"):
+                                        er_literals.append(e)
+                                    else:
+                                        er_entities.append(e)
+                                entities[er] = er_entities
+                                literals[er] = er_literals
+
+                            for er in er_entities:
+                                instance = self.text_to_instance(item, el_results={er: er_entities[er]},
+                                                                 el_hypo=el_hypo)
+                                if instance is not None:
+                                    el_hypo += 1
+                                    yield instance
+                            for er in er_literals:
+                                instance = self.text_to_instance(item, el_results={er: er_literals[er]},
+                                                                 el_hypo=el_hypo)
+                                if instance is not None:
+                                    el_hypo += 1
+                                    yield instance
+
+                            instance = self.text_to_instance(item, el_results=er_entities,
+                                                                 el_hypo=el_hypo)
                             if instance is not None:
                                 el_hypo += 1
                                 yield instance
+
                     instance = self.text_to_instance(item, el_results=el_results, el_hypo=el_hypo)
                     if instance is not None:
                         yield instance
@@ -591,4 +622,3 @@ class Arcane_DatasetReader(DatasetReader):
                         break
 
         return start, end
-
