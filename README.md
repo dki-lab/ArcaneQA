@@ -53,6 +53,7 @@ ArcaneQA/
     ├─ webqsp_official_evaluation.py: Official evaluation script for WebQSP
     ├─ arcane.py: ArcaneQA model class
     ├─ arcane_reader.py: ArcaneQA dataset reader class
+├─ environment_arcane.yml: yml file for conda environment    
 ```
 
 
