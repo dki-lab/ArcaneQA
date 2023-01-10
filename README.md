@@ -22,16 +22,16 @@ This repository is structured as follows:
 ```
 ArcaneQA/
 ├─ configs/
-    ├─ train/: Configuration files for training
-    ├─ infer/: Configuration files for inference
+│    ├─ train/: Configuration files for training
+│    └── infer/: Configuration files for inference
 ├─ data/: Processed data files for different KBQA datasets
 ├─ ontology/: Processed Freebase ontology files
-    ├─ domain_dict: Mapping from a domain in Freebase Commons to all schema items in it
-    ├─ domain_info: Mapping from a schema item to a Freebase Commons domain it belongs to
-    ├─ fb_roles: Domain and range information for a relation (Note that here domain means a different thing from domains in Freebase Commons)
-    ├─ fb_types: Class hierarchy in Freebase
-    ├─ reverse_properties: Reverse properties in Freebase 
-    ├─ commons/: Corresponding files of Freebase Commons subset
+│    ├─ domain_dict: Mapping from a domain in Freebase Commons to all schema items in it
+│    ├─ domain_info: Mapping from a schema item to a Freebase Commons domain it belongs to
+│    ├─ fb_roles: Domain and range information for a relation (Note that here domain means a different thing from domains in Freebase Commons)
+│    ├─ fb_types: Class hierarchy in Freebase
+│    ├─ reverse_properties: Reverse properties in Freebase 
+│    └── commons/: Corresponding files of Freebase Commons subset
 ├─ answer_typing/: Answer typing results for GrailQA
 ├─ el_results/: Entity linking results 
 ├─ vocabulary/: Preprocessed vocabulary
@@ -39,21 +39,21 @@ ArcaneQA/
 ├─ saved_models/: Trained models
 ├─ predictions/: ArcaneQA's predictions on different KBQA benchmarks
 ├─ source/:
-    ├─ utils/:
-        ├─ bert_interface.py: Interface to BERT 
-        ├─ my_pretrained_transformer_indexer.py: Class for indexer for PLMs, adapted from AllenNLP
-        ├─ my_pretrained_transformer_tokenizer.py: Class for tokenizer for PLMs, adapted from AllenNLP
-        ├─ logic_form_util.py: Tools related to logical forms, including the exact match checker for two logical forms
-        ├─ arcane_beam_search.py: Beam search for autoregressive decoding in ArcaneQA
-        ├─ sparql_executor.py: Sparql-related tools
-        ├─ kb_engine.py: Core functions for KB querying and constrained decoding
-        ├─ sparql_cache.py: Cache executions of different types of Sparql queries
-    ├─ run.py: Main function
-    ├─ evaluation.py: Evaluation script for WebQSP and GraphQuestion
-    ├─ webqsp_official_evaluation.py: Official evaluation script for WebQSP
-    ├─ arcane.py: ArcaneQA model class
-    ├─ arcane_reader.py: ArcaneQA dataset reader class
-├─ environment_arcane.yml: yml file for conda environment    
+│    └── utils/:
+│        ├─ bert_interface.py: Interface to BERT 
+│        ├─ my_pretrained_transformer_indexer.py: Class for indexer for PLMs, adapted from AllenNLP
+│        ├─ my_pretrained_transformer_tokenizer.py: Class for tokenizer for PLMs, adapted from AllenNLP
+│        ├─ logic_form_util.py: Tools related to logical forms, including the exact match checker for two logical forms
+│        ├─ arcane_beam_search.py: Beam search for autoregressive decoding in ArcaneQA
+│        ├─ sparql_executor.py: Sparql-related tools
+│        ├─ kb_engine.py: Core functions for KB querying and constrained decoding
+│        ├─ sparql_cache.py: Cache executions of different types of Sparql queries
+│    ├─ run.py: Main function
+│    ├─ evaluation.py: Evaluation script for WebQSP and GraphQuestion
+│    ├─ webqsp_official_evaluation.py: Official evaluation script for WebQSP
+│    ├─ arcane.py: ArcaneQA model class
+│    └── arcane_reader.py: ArcaneQA dataset reader class
+└── environment_arcane.yml: yml file for conda environment    
 ```
 
 
