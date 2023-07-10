@@ -4,6 +4,7 @@
 [![language-python3](https://img.shields.io/badge/Language-Python3-blue.svg?style=flat-square)](https://www.python.org/)
 [![made-with-Pytorch](https://img.shields.io/badge/Made%20with-Pytorch-orange.svg?style=flat-square)](https://pytorch.org/)
 [![paper](https://img.shields.io/badge/Paper-COLING2022-lightgrey?style=flat-square)](https://arxiv.org/pdf/2204.08109.pdf)
+[![award](https://img.shields.io/badge/Award-Outstanding%20Paper%20Award-gold?style=flat-square)](https://arxiv.org/pdf/2204.08109.pdf)
 
 >ArcaneQA is a generation-based KBQA model built upon the encoder-decoder framework. It features two mutually-boosting modules: ***dynamic program induction*** and ***dynamic contextualized encoding*** in a unified framework. For dynamic program induction, we **unify the meaning representation in several KBQA datasets**, and our annotations are also available in this repo; For dynamic contextualized encoding, we **introduce a novel idea of applying pre-trained language models (PLMs) to KBQA**.
 
