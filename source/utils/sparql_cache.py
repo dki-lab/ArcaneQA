@@ -153,6 +153,20 @@ class SparqlCache:
 
         return self.execution["cmp_entities"][str(value) + relation + comp]
 
+    def cache_results(self):
+        if self.dataset == "grail":
+            with open(path + "/../cache/execution.json", 'w') as f1:
+                json.dump(self.execution, f1)
+        elif self.dataset == "gq1":
+            with open(path + "/../cache/gq1_execution.json", 'w') as f1:
+                json.dump(self.execution, f1)
+        elif self.dataset == "webq":
+            with open(path + "/../cache/webq_execution.json", 'w') as f1:
+                json.dump(self.execution, f1)
+        elif self.dataset == "cwq":
+            with open(path + "/../cache/cwq_execution.json", 'w') as f1:
+                json.dump(self.execution, f1)
+
 
 if __name__ == '__main__':
     sparql_cache = SparqlCache()
